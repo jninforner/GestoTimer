@@ -62,7 +62,7 @@
 </head>
 <body>
 <script>
-const APP_VERSION = '1.1.0';
+const APP_VERSION = '1.1.1';
 const N = 6;
 /* El pas de + i − creix mentre es manté premut */
 let so = null;
@@ -70,11 +70,11 @@ function llegirAudio() { try { so = so || new (window.AudioContext || window.web
 function piuIntermedi(tipus) {
   try {
     if (!so) return;
-    [0, 0.22].forEach(function (offset) {
+    Array.from({length: 8}, (_, i) => i * 0.25).forEach(function (offset) {
       const o = so.createOscillator(), g = so.createGain();
       o.connect(g); g.connect(so.destination);
       o.frequency.value = tipus === 2 ? 1100 : 550; g.gain.value = 0.22;
-      o.start(so.currentTime + offset); o.stop(so.currentTime + offset + 0.15);
+      o.start(so.currentTime + offset); o.stop(so.currentTime + offset + 0.17);
     });
   } catch (e) {}
 }
