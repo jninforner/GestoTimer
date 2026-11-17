@@ -1,4 +1,4 @@
-const CACHE = "temporitzadors-v1.2.0";
+const CACHE = "temporitzadors-v1.3.0";
 const ASSETS = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting()));

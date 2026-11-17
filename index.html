@@ -18,11 +18,12 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;min-height:100%;background:var(--fons);color:#203448;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-variant:normal}
 button,select,input{font-family:inherit;font-variant:normal}
-body{display:grid;grid-template-rows:auto repeat(6,minmax(0,1fr));gap:10px;padding:12px;min-height:100dvh}
+body{display:grid;grid-template-rows:auto;align-content:start;gap:10px;padding:12px;min-height:100dvh}
 .cap{display:flex;justify-content:space-between;align-items:center;gap:9px;padding:3px 3px 7px;flex-wrap:wrap}
 .cap h1{margin:0;font-size:clamp(21px,5vw,29px);font-weight:750;letter-spacing:-.035em;color:var(--navi-fosc)}
+.controls-timers{display:flex;align-items:center;gap:7px;margin-left:auto}.controls-timers button{min-width:0;width:37px;height:37px;padding:0;font-size:24px;line-height:1}.comptador{font-size:13px;color:#536c82;font-weight:650;min-width:42px;text-align:center}.controls-timers button:disabled{opacity:.3;cursor:not-allowed}
 .versio{font-size:12px;font-weight:600;color:#7c8c9c;white-space:nowrap;margin-right:auto}
-.t{background:#fff;border:1px solid var(--linia);border-left:4px solid var(--navi);border-radius:14px;box-shadow:0 3px 12px rgba(21,60,90,.055);display:flex;align-items:center;gap:10px;padding:10px 13px;min-width:0}
+.t{min-height:116px;background:#fff;border:1px solid var(--linia);border-left:4px solid var(--navi);border-radius:14px;box-shadow:0 3px 12px rgba(21,60,90,.055);display:flex;align-items:center;gap:10px;padding:10px 13px;min-width:0}
 .t.fi{background:var(--pale-v);border-color:#e8c1bd;border-left-color:var(--vermell);color:var(--vermell);animation:parpelleig 1s infinite}
 @keyframes parpelleig{50%{opacity:.68}}
 .zona{flex:1;min-width:0;display:flex;flex-direction:column;gap:7px}
@@ -66,8 +67,9 @@ select{font-size:clamp(13px,3.6vw,18px);font-weight:600;padding:7px 9px;border-r
 </head>
 <body>
 <script>
-const APP_VERSION = '1.2.0';
-const N = 6;
+const APP_VERSION = '1.3.0';
+const MIN_TIMERS = 1, MAX_TIMERS = 10;
+let timerCount = Math.min(MAX_TIMERS, Math.max(MIN_TIMERS, Number(carrega('nombreTemporitzadors', 3)) || 3));
 /* El pas de + i − creix mentre es manté premut */
 let so = null;
 function llegirAudio() { try { so = so || new (window.AudioContext || window.webkitAudioContext)(); so.resume(); } catch (e) {} }
@@ -221,8 +223,24 @@ pan.querySelector('.desa').onclick = function () {
   tanca();
 };
 
-/* Els sis temporitzadors */
-for (let i = 0; i < N; i++) {
+/* Temporitzadors dinàmics: entre 1 i 10. */
+const controls = document.createElement('div');
+controls.className = 'controls-timers';
+const menysTimer = document.createElement('button');
+menysTimer.className = 'sec'; menysTimer.textContent = '−'; menysTimer.title = 'Elimina l’últim temporitzador'; menysTimer.setAttribute('aria-label','Elimina l’últim temporitzador');
+const comptador = document.createElement('span'); comptador.className = 'comptador';
+const mesTimer = document.createElement('button');
+mesTimer.textContent = '+'; mesTimer.title = 'Afegeix un temporitzador'; mesTimer.setAttribute('aria-label','Afegeix un temporitzador');
+controls.append(menysTimer, comptador, mesTimer);
+cap.insertBefore(controls, cfg);
+const timersActius = [];
+function actualitzaControls() {
+  comptador.textContent = timersActius.length + '/10';
+  menysTimer.disabled = timersActius.length <= MIN_TIMERS;
+  mesTimer.disabled = timersActius.length >= MAX_TIMERS;
+  guarda('nombreTemporitzadors', timersActius.length);
+}
+function creaTemporitzador(i) {
   let total = carrega('u' + i, null);
   if (total === null) { const g = carrega('t' + i, { m: 5, s: 0 }); total = g.m * 60 + g.s; }
   let resta = total, fins = null, id = null, al = null;
@@ -243,7 +261,8 @@ for (let i = 0; i < N; i++) {
   omple(sel, q);
   function actualitzaAvis() { const o = ops.find(function (x) { return x.id === parseInt(sel.value); }); avisSeg = o ? [Number(o.am||0)*60+Number(o.as||0),Number(o.bm||0)*60+Number(o.bs||0)] : [0,0]; }
   actualitzaAvis();
-  document.addEventListener('opcionsActualitzades', function () { actualitzaAvis(); if (!id) avisFet = [false,false]; });
+  const onOpcionsActualitzades = function () { actualitzaAvis(); if (!id) avisFet = [false,false]; };
+  document.addEventListener('opcionsActualitzades', onOpcionsActualitzades);
   function pinta() { pant.textContent = fmt(resta); }
   function atura() { clearInterval(id); id = null; fins = null; go.textContent = 'Inicia'; }
   function paraAlarma() { clearInterval(al); al = null; d.classList.remove('fi'); }
@@ -309,7 +328,26 @@ for (let i = 0; i < N; i++) {
     guarda('u' + i, total);
     pinta();
   };
+  timersActius.push({ element: d, destrueix: function () {
+    clearInterval(id); clearInterval(al);
+    document.removeEventListener('opcionsActualitzades', onOpcionsActualitzades);
+    const pos = selectes.indexOf(sel); if (pos !== -1) selectes.splice(pos, 1);
+    d.remove();
+  }});
 }
+menysTimer.onclick = function () {
+  if (timersActius.length <= MIN_TIMERS) return;
+  const ultim = timersActius.pop();
+  ultim.destrueix();
+  actualitzaControls();
+};
+mesTimer.onclick = function () {
+  if (timersActius.length >= MAX_TIMERS) return;
+  creaTemporitzador(timersActius.length);
+  actualitzaControls();
+};
+for (let i = 0; i < timerCount; i++) creaTemporitzador(i);
+actualitzaControls();
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js');
