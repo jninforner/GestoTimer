@@ -1,20 +1,15 @@
-const CACHE = "temporitzadors-v1";
-
-self.addEventListener("install", e => {
-  e.waitUntil(
-    caches.open(CACHE).then(cache =>
-      cache.addAll([
-        "./",
-        "./index.html",
-        "./manifest.json"
-      ])
-    )
-  );
+const CACHE = "temporitzadors-v1.1.0";
+const ASSETS = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png"];
+self.addEventListener("install", event => {
+  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting()));
 });
-
-self.addEventListener("fetch", e => {
-  e.respondWith(
-    caches.match(e.request)
-      .then(r => r || fetch(e.request))
-  );
+self.addEventListener("activate", event => {
+  event.waitUntil(Promise.all([
+    caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE && key.startsWith("temporitzadors-")).map(key => caches.delete(key)))),
+    self.clients.claim()
+  ]));
+});
+self.addEventListener("fetch", event => {
+  if (event.request.method !== "GET") return;
+  event.respondWith(caches.match(event.request).then(cached => cached || fetch(event.request)));
 });

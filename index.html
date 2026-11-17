@@ -11,8 +11,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Temporitzadors_test">
-<title>Temporitzadors_test</title>
+<meta name="apple-mobile-web-app-title" content="Temporitzadors">
+<title>Temporitzadors</title>
 <style>
   :root { --fons:#fff; --navi:#2b3990; --pale:#dde0f1; --vermell:#b3322b; --pale-v:#f4cdc8;
     box-sizing: border-box; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
@@ -21,6 +21,7 @@
   button, select, input { font-family:inherit; font-variant:inherit; }
   body { display:grid; grid-template-rows:auto repeat(6,1fr); gap:10px; padding:12px; }
   .cap { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+  .versio { font-size:12px; opacity:.65; white-space:nowrap; margin-right:auto; }
   .cap h1 { margin:0; font-size:clamp(20px, 6vw, 30px); font-weight:400; letter-spacing:.04em; }
   .t { background:linear-gradient(90deg, #fff 0%, var(--pale) 50%, #fff 100%); border:1.5px solid var(--navi); border-radius:0 34px 0 34px; display:flex; align-items:center; gap:10px; padding:10px 20px; min-width:0; }
   .t.fi { background:linear-gradient(90deg, #fff 0%, var(--pale-v) 50%, #fff 100%); border-color:var(--vermell); color:var(--vermell); animation:parpelleig 1s infinite; }
@@ -61,17 +62,18 @@
 </head>
 <body>
 <script>
+const APP_VERSION = '1.1.0';
 const N = 6;
 /* El pas de + i − creix mentre es manté premut */
 let so = null;
 function llegirAudio() { try { so = so || new (window.AudioContext || window.webkitAudioContext)(); so.resume(); } catch (e) {} }
-function piuIntermedi() {
+function piuIntermedi(tipus) {
   try {
     if (!so) return;
     [0, 0.22].forEach(function (offset) {
       const o = so.createOscillator(), g = so.createGain();
       o.connect(g); g.connect(so.destination);
-      o.frequency.value = 660; g.gain.value = 0.22;
+      o.frequency.value = tipus === 2 ? 1100 : 550; g.gain.value = 0.22;
       o.start(so.currentTime + offset); o.stop(so.currentTime + offset + 0.15);
     });
   } catch (e) {}
@@ -126,8 +128,12 @@ function refrescaSelectes() { selectes.forEach(function (sel) { omple(sel, parse
 const cap = document.createElement('div');
 cap.className = 'cap';
 const tit = document.createElement('h1');
-tit.textContent = 'Temporitzadors_test';
+tit.textContent = 'Temporitzadors';
 cap.appendChild(tit);
+const versio = document.createElement('span');
+versio.textContent = 'v' + APP_VERSION;
+versio.className = 'versio';
+cap.appendChild(versio);
 const cfg = document.createElement('button');
 cfg.className = 'sec';
 cfg.textContent = 'Configura opcions';
@@ -242,7 +248,7 @@ for (let i = 0; i < N; i++) {
     pinta();
     avisSeg.forEach(function(seg,j){
       if (!avisFet[j] && seg>0 && total>seg && total-resta>=seg && resta>0) {
-        avisFet[j]=true; piuIntermedi();
+        avisFet[j]=true; piuIntermedi(j + 1);
       }
     });
     if (resta === 0) { atura(); d.classList.add('fi'); go.textContent = 'Atura'; piu(); clearInterval(al); al = setInterval(piu, 700); }
