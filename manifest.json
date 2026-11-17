@@ -3,8 +3,8 @@
   "short_name": "Temporitzadors",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#2b3990",
+  "background_color": "#f3f6f9",
+  "theme_color": "#14518a",
   "orientation": "portrait",
   "lang": "ca",
   "icons": [
@@ -20,5 +20,5 @@
     }
   ],
   "id": "./index.html",
-  "version": "1.1.1"
+  "version": "1.2.0"
 }
