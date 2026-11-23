@@ -2,7 +2,7 @@
 <html lang="ca">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#14518a">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png?v=1.3.1">
 
 
 
@@ -11,8 +11,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Temporitzadors">
-<title>Temporitzadors</title>
+<meta name="apple-mobile-web-app-title" content="GestoTimer">
+<title>GestoTimer</title>
 <style>
 :root{--navi:#14518a;--navi-fosc:#103b63;--pale:#e8f0f7;--fons:#f3f6f9;--vermell:#bd443f;--pale-v:#fff0ed;--linia:#dbe5ed;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -67,7 +67,7 @@ select{font-size:clamp(13px,3.6vw,18px);font-weight:600;padding:7px 9px;border-r
 </head>
 <body>
 <script>
-const APP_VERSION = '1.3.0';
+const APP_VERSION = '1.3.1';
 const MIN_TIMERS = 1, MAX_TIMERS = 10;
 let timerCount = Math.min(MAX_TIMERS, Math.max(MIN_TIMERS, Number(carrega('nombreTemporitzadors', 3)) || 3));
 /* El pas de + i − creix mentre es manté premut */
@@ -134,7 +134,7 @@ function refrescaSelectes() { selectes.forEach(function (sel) { omple(sel, parse
 const cap = document.createElement('div');
 cap.className = 'cap';
 const tit = document.createElement('h1');
-tit.textContent = 'Temporitzadors';
+tit.textContent = 'GestoTimer';
 cap.appendChild(tit);
 const versio = document.createElement('span');
 versio.textContent = 'v' + APP_VERSION;
