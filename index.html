@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="ca">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#303f91">
-<link rel="apple-touch-icon" href="icon-192.png?v=1.4.0">
-
-
-
-
 <head>
 <meta charset="UTF-8">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#303f91">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=1.4.1">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=1.4.1">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=1.4.1">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="GestoTimer">
@@ -108,7 +106,7 @@ select{border:1px solid var(--field);border-radius:10px;background:var(--surface
 </head>
 <body>
 <script>
-const APP_VERSION = '1.4.0';
+const APP_VERSION = '1.4.1';
 const MIN_TIMERS = 1, MAX_TIMERS = 10;
 let timerCount = Math.min(MAX_TIMERS, Math.max(MIN_TIMERS, Number(carrega('nombreTemporitzadors', 3)) || 3));
 /* El pas de + i − creix mentre es manté premut */
