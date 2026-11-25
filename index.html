@@ -4,23 +4,21 @@
 <meta charset="UTF-8">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#303f91">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=1.4.1">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=1.4.1">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=1.4.1">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=1.5.0">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=1.5.0">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=1.5.0">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="GestoTimer">
 <title>GestoTimer</title>
+<script>try{document.documentElement.dataset.theme=localStorage.getItem("theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}catch(e){}</script>
 <style>
 :root{--navi:#14518a;--navi-fosc:#103b63;--pale:#e8f0f7;--fons:#f3f6f9;--vermell:#bd443f;--pale-v:#fff0ed;--linia:#dbe5ed;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;min-height:100%;background:var(--fons);color:#203448;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-variant:normal}
 button,select,input{font-family:inherit;font-variant:normal}
 body{display:grid;grid-template-rows:auto;align-content:start;gap:10px;padding:12px;min-height:100dvh}
-.cap{display:flex;justify-content:space-between;align-items:center;gap:9px;padding:3px 3px 7px;flex-wrap:wrap}
-.cap h1{margin:0;font-size:clamp(21px,5vw,29px);font-weight:750;letter-spacing:-.035em;color:var(--navi-fosc)}
 .controls-timers{display:flex;align-items:center;gap:7px;margin-left:auto}.controls-timers button{min-width:0;width:37px;height:37px;padding:0;font-size:24px;line-height:1}.comptador{font-size:13px;color:#536c82;font-weight:650;min-width:42px;text-align:center}.controls-timers button:disabled{opacity:.3;cursor:not-allowed}
-.versio{font-size:12px;font-weight:600;color:#7c8c9c;white-space:nowrap;margin-right:auto}
 .t{min-height:116px;background:#fff;border:1px solid var(--linia);border-left:4px solid var(--navi);border-radius:14px;box-shadow:0 3px 12px rgba(21,60,90,.055);display:flex;align-items:center;gap:10px;padding:10px 13px;min-width:0}
 .t.fi{background:var(--pale-v);border-color:#e8c1bd;border-left-color:var(--vermell);color:var(--vermell);animation:parpelleig 1s infinite}
 @keyframes parpelleig{50%{opacity:.68}}
@@ -59,22 +57,13 @@ select{font-size:clamp(13px,3.6vw,18px);font-weight:600;padding:7px 9px;border-r
 .nota-avís{font-size:12px;opacity:.8;margin-top:8px}
 .pan .afegeix{width:100%;margin-top:12px}
 .peu{display:flex;gap:10px;justify-content:flex-end;margin-top:14px}
-@media(min-width:800px){body{max-width:1080px;margin:0 auto;padding:20px;gap:12px}.t{padding:14px 24px}.cap{padding-bottom:12px}}
+@media(min-width:800px){body{max-width:1080px;margin:0 auto;padding:20px;gap:12px}.t{padding:14px 24px}}
 @media(max-width:380px){body{gap:7px;padding:8px}.t{padding:7px 8px;gap:6px}.zona{gap:5px}.baix{gap:4px}.ajust{gap:3px}.botons{gap:5px}.botons button{padding:7px 5px}}
 /* Aspecte comú de les apps Gesto (colors, botons, mode fosc i requadre principal com GestoComandes). */
 :root{color-scheme:light;--bg:#f7f8fd;--tx:#28377e;--mu:#566598;--ln:#303f91;--surface:#fff;--soft:#f0f2fc;--border:#d4daf1;--field:#b6bfdf;--on:#fff;--red:#b42318;--red-soft:#fff0ed;--red-border:#f0c4bf;--main-bg:#eaf0ff;--main-border:#afbfeb;--navi:var(--ln);--navi-fosc:var(--tx);--pale:var(--soft);--fons:var(--bg);--vermell:var(--red);--pale-v:var(--red-soft);--linia:var(--border)}
 :root[data-theme=dark]{color-scheme:dark;--bg:#10152c;--tx:#e5e9ff;--mu:#adb8e5;--ln:#a1afff;--surface:#1b2447;--soft:#232f59;--border:#425080;--field:#6371a0;--on:#10152c;--red:#ff9992;--red-soft:#3a1f2e;--red-border:#7a3b48;--main-bg:#202e55;--main-border:#516798}
 html,body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
 body{display:block;max-width:760px;margin:0 auto;padding:20px 16px 36px}
-.cap{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:nowrap;padding:0 0 10px;margin-bottom:18px}
-.brand{min-width:0}
-.cap h1{font-size:clamp(20px,4.5vw,28px);font-weight:700;line-height:1.1;color:var(--tx)}
-.versio{display:block;margin-top:5px;font-size:13px;font-weight:400;color:var(--mu)}
-.menu-anchor{position:relative;flex-shrink:0}
-.menu-boto{min-width:0;gap:7px;padding:8px 12px}
-.menu-panel{position:absolute;top:calc(100% + 8px);right:0;z-index:5;width:200px;display:flex;flex-direction:column;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 30px rgba(40,55,126,.15);padding:10px}
-.menu-panel[hidden]{display:none}
-.menu-panel button{width:100%;min-width:0;text-align:left;font-size:15px}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:0 3px 14px rgba(40,55,126,.055);padding:20px}
 .main-card{background:var(--main-bg);border-color:var(--main-border)}
 .cap-timers{display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -102,11 +91,110 @@ select{border:1px solid var(--field);border-radius:10px;background:var(--surface
 :focus-visible{outline:3px solid #788cf0;outline-offset:2px}
 @media(min-width:800px){body{max-width:760px;padding:20px 16px 36px}.t{padding:14px 20px}}
 @media(max-width:430px){body{padding:14px 12px 28px}.card{padding:14px}}
+/* Capçalera comuna de les apps Gesto: nom, versió, ☰ Menú i ↪︎ Sortir (ESTIL.md, «Capçalera de l'app» i «Menú»).
+   Font única: si canvies alguna cosa aquí, canvia a totes les apps. Va després del CSS de cada app. */
+.topbar{display:flex;align-items:center;justify-content:space-between;position:relative;gap:12px;margin:0 0 18px;padding:0 0 10px;border:0}
+.topbar .brand{min-width:0;flex:1}
+.topbar .brand h1{margin:0;font-size:clamp(20px,4.5vw,30px);font-weight:700;letter-spacing:-.035em;line-height:1.1;overflow-wrap:anywhere;font-variant:normal}
+.topbar .version{margin-top:5px;font-size:14px;color:var(--mu)}
+.top-actions{display:flex;flex-shrink:0;gap:8px;align-items:center}
+.top-actions>button,.top-actions>.menu-anchor>button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;padding:8px 12px;border:1px solid var(--ln);border-radius:10px;background:var(--surface);color:var(--tx);font:600 15px/1.3 system-ui,-apple-system,"Segoe UI",sans-serif;font-variant:normal;white-space:nowrap;cursor:pointer;box-shadow:none}
+.top-actions>button:hover,.top-actions>.menu-anchor>button:hover{background:var(--soft);color:var(--tx);box-shadow:none;filter:none}
+.top-actions button span:first-child{font-size:18px;line-height:1}
+.top-actions [hidden]{display:none!important}
+.menu-anchor{position:relative}
+#menu-panel{position:absolute;top:calc(100% + 8px);right:0;z-index:30;display:block;width:max-content;min-width:200px;max-width:calc(100vw - 24px);background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 30px rgba(40,55,126,.15);padding:10px}
+#menu-panel[hidden]{display:none}
+#menu-panel #tabs{display:grid;gap:6px;margin:0 0 6px}
+#menu-panel #tabs:empty{display:none}
+#menu-panel button{display:flex;align-items:center;justify-content:flex-start;width:100%;min-height:44px;margin:0;padding:9px 15px;border:1px solid var(--ln);border-radius:10px;background:var(--surface);color:var(--tx);font:600 15px/1.3 system-ui,-apple-system,"Segoe UI",sans-serif;font-variant:normal;text-align:left;white-space:nowrap;cursor:pointer;box-shadow:none}
+#menu-panel button:hover{background:var(--soft);color:var(--tx);box-shadow:none;filter:none}
+#menu-panel button[aria-current=page],#menu-panel button.on{background:var(--ln);color:var(--on)}
+#menu-panel button[aria-current=page]:hover,#menu-panel button.on:hover{background:var(--ln);color:var(--on);filter:brightness(1.13)}
+@media(max-width:430px){
+  .top-actions>button,.top-actions>.menu-anchor>button{font-size:14px;padding:7px 9px}
+  .topbar .version{font-size:13px}
+}
+/* Mòbil: només les icones, sense vora ni fons; el menú s'ancora a la capçalera. */
+@media(max-width:480px){
+  .topbar{align-items:flex-start;gap:8px;margin-bottom:8px;padding-bottom:4px}
+  .top-actions{gap:4px}
+  .top-actions #menu-toggle,.top-actions #logout{width:44px;min-height:44px;padding:0;border-color:transparent;background:transparent}
+  .top-actions .top-action-label{display:none}
+  .menu-anchor{position:static}
+  #menu-panel{top:100%;right:0}
+}
+
 </style>
 </head>
 <body>
+<header class="topbar">
+  <div class="brand"><h1>GestoTimer</h1><div class="meta version">Versió 1.5.0<span id="sync-state" role="status"></span></div></div>
+  <div class="top-actions">
+    <div class="menu-anchor">
+      <button id="menu-toggle" type="button" aria-label="Menú" aria-expanded="false" aria-controls="menu-panel"><span aria-hidden="true">☰</span><span class="top-action-label" aria-hidden="true">Menú</span></button>
+      <div id="menu-panel" hidden>
+        <nav aria-label="Seccions" id="tabs"><button id="cfg" type="button">Configura opcions</button></nav>
+        <button id="theme" type="button" aria-pressed="false">Mode fosc</button>
+      </div>
+    </div>
+    
+  </div>
+</header>
+
 <script>
-const APP_VERSION = '1.4.1';
+// Capçalera comuna de les apps Gesto: menú ☰ i mode fosc (ESTIL.md, «Capçalera de l'app» i «Menú»).
+// Font única per a GestoCatalog, GestoTips, GestoAdmin i GestoStock. L'HTML el genera shared/header.mjs.
+// gestoHeader() es pot cridar diverses vegades: només prepara els botons la primera.
+function gestoHeader() {
+  if (gestoHeader.ready) return gestoHeader.ready;
+  const toggle = document.getElementById('menu-toggle');
+  const panel = document.getElementById('menu-panel');
+  const theme = document.getElementById('theme');
+  function setMenu(open) {
+    panel.hidden = !open;
+    toggle.setAttribute('aria-expanded', String(open));
+  }
+  toggle.addEventListener('click', event => {
+    event.stopPropagation();
+    setMenu(panel.hidden);
+  });
+  // Es tanca en tocar fora, amb Esc o en triar una secció.
+  document.addEventListener('click', event => {
+    if (!panel.hidden && !event.target.closest('.menu-anchor')) setMenu(false);
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape' || panel.hidden) return;
+    setMenu(false);
+    toggle.focus();
+  });
+  panel.addEventListener('click', event => {
+    if (event.target.closest('#tabs button')) setMenu(false);
+  });
+  // Mode fosc: clau `theme` del navegador, comuna a totes les apps (mateix domini).
+  // El <head> ja l'aplica abans de pintar la pàgina; aquí només s'actualitza el botó.
+  function setTheme(dark) {
+    document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+    theme.textContent = dark ? 'Mode clar' : 'Mode fosc';
+    theme.setAttribute('aria-pressed', String(dark));
+  }
+  let saved = null;
+  try { saved = localStorage.getItem('theme'); } catch {}
+  setTheme(saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches);
+  theme.addEventListener('click', () => {
+    const dark = document.documentElement.dataset.theme !== 'dark';
+    try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch {}
+    setTheme(dark);
+  });
+  gestoHeader.ready = {
+    setMenu,
+    setTheme,
+    showMenu() { toggle.hidden = false; },
+    tabs: document.getElementById('tabs')
+  };
+  return gestoHeader.ready;
+}
+
 const MIN_TIMERS = 1, MAX_TIMERS = 10;
 let timerCount = Math.min(MAX_TIMERS, Math.max(MIN_TIMERS, Number(carrega('nombreTemporitzadors', 3)) || 3));
 /* El pas de + i − creix mentre es manté premut */
@@ -169,54 +257,9 @@ function omple(sel, v) {
 }
 function refrescaSelectes() { selectes.forEach(function (sel) { omple(sel, parseInt(sel.value)); }); }
 
-/* Botó i panell de configuració */
-const cap = document.createElement('div');
-cap.className = 'cap';
-const tit = document.createElement('h1');
-tit.textContent = 'GestoTimer';
-const versio = document.createElement('div');
-versio.textContent = 'Versió ' + APP_VERSION;
-versio.className = 'versio';
-const marca = document.createElement('div');
-marca.className = 'brand';
-marca.append(tit, versio);
-cap.appendChild(marca);
-const cfg = document.createElement('button');
-cfg.className = 'sec';
-cfg.textContent = 'Configura opcions';
-/* Menú i mode fosc, com a les altres apps Gesto (mateixa preferència: clau "theme"). */
-const menuAncora = document.createElement('div');
-menuAncora.className = 'menu-anchor';
-const menuBoto = document.createElement('button');
-menuBoto.className = 'sec menu-boto';
-menuBoto.innerHTML = '<span aria-hidden="true">☰</span> Menú';
-menuBoto.setAttribute('aria-expanded', 'false');
-const menuPanell = document.createElement('div');
-menuPanell.className = 'menu-panel';
-menuPanell.hidden = true;
-const tema = document.createElement('button');
-tema.className = 'sec';
-menuPanell.append(cfg, tema);
-menuAncora.append(menuBoto, menuPanell);
-cap.appendChild(menuAncora);
-function tancaMenu() { menuPanell.hidden = true; menuBoto.setAttribute('aria-expanded', 'false'); }
-menuBoto.onclick = function (e) { e.stopPropagation(); menuPanell.hidden = !menuPanell.hidden; menuBoto.setAttribute('aria-expanded', String(!menuPanell.hidden)); };
-document.addEventListener('click', function (e) { if (!menuAncora.contains(e.target)) tancaMenu(); });
-cfg.addEventListener('click', tancaMenu);
-function posaTema(fosc) {
-  document.documentElement.dataset.theme = fosc ? 'dark' : 'light';
-  tema.textContent = fosc ? 'Mode clar' : 'Mode fosc';
-  tema.setAttribute('aria-pressed', String(fosc));
-}
-let temaDesat = null;
-try { temaDesat = localStorage.getItem('theme'); } catch (e) {}
-posaTema(temaDesat ? temaDesat === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches);
-tema.onclick = function () {
-  const fosc = document.documentElement.dataset.theme !== 'dark';
-  try { localStorage.setItem('theme', fosc ? 'dark' : 'light'); } catch (e) {}
-  posaTema(fosc);
-};
-document.body.appendChild(cap);
+/* Capçalera, menú ☰ i mode fosc: shared/header.js, comú a totes les apps Gesto. «Configura opcions» és una opció del menú. */
+gestoHeader();
+const cfg = document.getElementById('cfg');
 /* Requadre principal amb els temporitzadors. */
 const principal = document.createElement('section');
 principal.className = 'card main-card';
