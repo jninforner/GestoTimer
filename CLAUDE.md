@@ -1,8 +1,7 @@
-# GestoTimer (temporitzadors de cuina)
+# GestoTimer — només la versió publicada
 
-Respon sempre en català; Joan és principiant, explica pas a pas i una cosa cada vegada.
+Respon sempre en català; Joan és principiant.
 
-- App web instal·lable (PWA) de **temporitzadors**: fitxers `index.html` (tot el codi), `sw.js`, `manifest.json`, icones. Sense servidor, sense compilació, sense base de dades: les dades es desen al navegador (`localStorage`).
-- Publicació: GitHub Pages, https://jninforner.github.io/GestoTimer/ (branca `main`).
-- La versió és en **tres llocs** que s'han de canviar junts: `APP_VERSION` a `index.html`, `version` a `manifest.json` i el nom de la memòria cau `CACHE` a `sw.js` (si no es canvia `CACHE`, els mòbils continuen veient la versió vella).
-- L’app abans es deia "Temporitzadors"; el nom intern de la dada desada (`nombreTemporitzadors` a localStorage) es manté per no perdre els ajustos.
+**Aquest repositori no s'edita a mà.** Des del 26/11/2026 el codi de GestoTimer és a la carpeta `timer/` del repositori privat **GestoApps** (amb tot l'historial). En pujar un canvi a `main` de GestoApps, GitHub Actions copia aquí `index.html`, `sw.js`, `manifest.json` i les icones, i GitHub Pages ho publica a https://jninforner.github.io/GestoTimer/.
+
+Per fer qualsevol canvi a GestoTimer, treballa a GestoApps (`timer/index.html` i `timer/CLAUDE.md`).
