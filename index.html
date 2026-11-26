@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#303f91">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=1.5.1">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=1.5.1">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=1.5.1">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=1.6.0">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=1.6.0">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=1.6.0">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="GestoTimer">
@@ -20,85 +20,128 @@
 :root{--main-bg:#eaf0ff;--main-border:#afbfeb}
 :root[data-theme=dark]{--main-bg:#202e55;--main-border:#516798}
 
+/* Estil de base de les apps Gesto (ESTIL.md): tipografia, targetes, camps, botons, llistes, fitxes, inici de sessió.
+   El fan servir GestoCatalog, GestoTips i GestoAdmin. Va després de colors.css i abans de l'estil propi de cada app. */
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:760px;margin:auto;padding:20px 16px 36px}
+header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:14px;margin-bottom:18px}
+h1{font-size:28px;letter-spacing:-.035em;margin:0}
+h2{font-size:21px;margin:0 0 14px}
+h3{font-size:17px;margin:0 0 8px}
+p{margin:8px 0}
+nav,.actions{display:flex;gap:8px;flex-wrap:wrap}
+nav{margin-bottom:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:0 3px 14px rgba(40,55,126,.055);padding:20px;margin-bottom:16px}
+label{display:grid;gap:4px;font-size:14px;color:var(--mu)}
+input,select,textarea{width:100%;min-height:46px;padding:8px 12px;border:1px solid var(--field);border-radius:10px;background:var(--surface);color:var(--tx);font:inherit;font-size:16px}
+textarea{display:block;resize:vertical;margin:10px 0}
+button,.button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:9px 15px;border:1px solid var(--ln);border-radius:10px;background:var(--surface);color:var(--tx);font:600 15px/1.3 inherit;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none}
+button:hover,.button:hover{background:var(--soft)}
+.primary,[aria-current=page]{background:var(--ln);color:var(--on)}
+.primary:hover,[aria-current=page]:hover{background:var(--ln);filter:brightness(1.13)}
+:focus-visible{outline:3px solid #788cf0;outline-offset:2px}
+button:disabled{opacity:.55;cursor:not-allowed}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:12px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.item{border-top:1px solid var(--border);padding:8px 0}
+.item:last-child{padding-bottom:0}
+.meta{color:var(--mu);font-size:14px}
+.error,.remove{color:var(--red)}
+@media(max-width:430px){main{padding:14px 12px 28px}.card{padding:15px}h1{font-size:24px}nav button{padding:8px 11px}}
+[hidden]{display:none !important}
+main{width:100%;padding-inline:max(12px,env(safe-area-inset-left)) max(12px,env(safe-area-inset-right))}
+.card,.grid,.grid>* ,label,.row>*{min-width:0}
+input,select,textarea,button,.button{max-width:100%;min-width:0}
+input[type=file]{width:100%}
+img,video,canvas{max-width:100%;height:auto}
+.card{overflow-wrap:anywhere}
+.grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr))}
+#login-panel{max-width:500px;margin-inline:auto}
+#login-form .grid{grid-template-columns:minmax(0,1fr)}
+.login-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#password-reset{display:inline-block;margin:12px 0;color:var(--tx);text-underline-offset:.18em}
+#login-status:empty{display:none}
+@media(max-width:480px){
+  html{-webkit-text-size-adjust:100%}
+  button,.button{touch-action:manipulation}
+}
+/* Requadre principal de cada pantalla */
+.main-card{background:var(--main-bg);border-color:var(--main-border)}
+.main-card .card{background:var(--surface);box-shadow:none;border-radius:14px;padding:16px;margin:12px 0 0}
+.main-card .card h3:first-child{margin-top:0}
+.main-card .card h2{font-size:17px;margin:0 0 10px}
+.main-card>.card:first-of-type{margin-top:14px}
+/* Fitxes (diàlegs): <dialog class="sheet-dialog"> amb .sheet-head (títol i ✕), .sheet-part i .sheet-foot */
+dialog.sheet-dialog{width:min(560px,calc(100% - 24px));max-height:calc(100% - 24px);padding:18px;color:var(--tx);background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:auto}
+dialog.sheet-dialog::backdrop{background:#11183180}
+.sheet-close{min-width:0;width:40px;min-height:40px;padding:0;font-size:18px;flex:none}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sheet-head h2{margin:0}
+.sheet-part{border-top:1px solid var(--border);margin-top:14px;padding-top:12px}
+.sheet-part h3{margin:0 0 8px}
+.sheet-foot{border-top:1px solid var(--border);margin-top:14px;padding-top:12px}
+/* Botons d'icona (llapis, impressora…) */
+.icon-button{min-width:0;width:36px;min-height:36px;padding:0}
+.icon-button svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.icon-button.remove{border-color:var(--red)}
+.icon-button:disabled{opacity:.35}
+
+/* ===== GestoTimer: només el que és propi. Colors, tipografia, botons, camps i targetes són de
+   shared/colors.css i shared/base.css (comuns amb les altres apps Gesto). ===== */
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;min-height:100%;background:var(--fons);color:#203448;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-variant:normal}
-button,select,input{font-family:inherit;font-variant:normal}
-body{display:grid;grid-template-rows:auto;align-content:start;gap:10px;padding:12px;min-height:100dvh}
-.controls-timers{display:flex;align-items:center;gap:7px;margin-left:auto}.controls-timers button{min-width:0;width:37px;height:37px;padding:0;font-size:24px;line-height:1}.comptador{font-size:13px;color:#536c82;font-weight:650;min-width:42px;text-align:center}.controls-timers button:disabled{opacity:.3;cursor:not-allowed}
-.t{min-height:116px;background:#fff;border:1px solid var(--linia);border-left:4px solid var(--navi);border-radius:14px;box-shadow:0 3px 12px rgba(21,60,90,.055);display:flex;align-items:center;gap:10px;padding:10px 13px;min-width:0}
-.t.fi{background:var(--pale-v);border-color:#e8c1bd;border-left-color:var(--vermell);color:var(--vermell);animation:parpelleig 1s infinite}
+*{-webkit-tap-highlight-color:transparent}
+/* Colors propis (alarma) i noms antics que apunten als comuns */
+:root{--red-soft:#fff0ed;--red-border:#f0c4bf;--navi:var(--ln);--navi-fosc:var(--tx);--pale:var(--soft);--fons:var(--bg);--vermell:var(--red);--pale-v:var(--red-soft);--linia:var(--border)}
+:root[data-theme=dark]{--red-soft:#3a1f2e;--red-border:#7a3b48}
+/* GestoTimer no té <main>: el cos fa de contenidor, amb les mateixes mides que el <main> de les altres apps */
+body{max-width:760px;margin:0 auto;padding:20px 16px 36px;min-height:100dvh}
+@media(max-width:430px){body{padding:14px 12px 28px}}
+/* Requadre principal: títol, + i − */
+.cap-timers{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.cap-timers h2{margin:0}
+.controls-timers{display:flex;align-items:center;gap:7px}
+.controls-timers button{min-width:0;width:40px;min-height:40px;height:40px;padding:0;font-size:24px;line-height:1}
+.comptador{font-size:13px;color:var(--mu);font-weight:650;min-width:42px;text-align:center}
+.timers{display:grid;gap:10px;margin-top:12px}
+/* Cada temporitzador */
+.t{min-height:116px;background:var(--surface);border:1px solid var(--border);border-radius:14px;display:flex;align-items:center;gap:10px;padding:10px 13px;min-width:0}
+.t.fi{background:var(--red-soft);border-color:var(--red-border);color:var(--red);animation:parpelleig 1s infinite}
 @keyframes parpelleig{50%{opacity:.68}}
 .zona{flex:1;min-width:0;display:flex;flex-direction:column;gap:7px}
 .baix{display:flex;align-items:center;gap:7px}
 .ajust{display:flex;gap:5px}
-.temps{font-size:clamp(27px,8.6vw,70px);font-variant-numeric:tabular-nums lining-nums;font-weight:680;letter-spacing:-.055em;flex:1;min-width:0;text-align:center;white-space:nowrap;color:var(--navi-fosc)}
+.temps{font-size:clamp(27px,8.6vw,70px);font-variant-numeric:tabular-nums lining-nums;font-weight:680;letter-spacing:-.055em;flex:1;min-width:0;text-align:center;white-space:nowrap;color:var(--tx)}
+.t.fi .temps{color:var(--red)}
+select{min-height:44px;height:44px;padding:6px 10px;font-weight:600;text-overflow:ellipsis}
+/* Botons: els principals (Inicia, Desa) van plens; .sec són secundaris; .mini, els − i + del temps */
 .botons{display:flex;flex-direction:column;gap:7px}
-.botons button{font-size:clamp(12px,3.3vw,16px);padding:9px 8px;min-width:clamp(66px,18vw,100px)}
-button{border:1px solid var(--navi);border-radius:9px;background:var(--navi);color:white;font-weight:650;letter-spacing:0;font-size:clamp(13px,3.5vw,17px);padding:10px 12px;min-width:clamp(76px,21vw,108px);cursor:pointer;transition:background .16s,border-color .16s,transform .12s}
-button:hover{background:var(--navi-fosc);border-color:var(--navi-fosc)}
+.botons button{min-width:clamp(76px,20vw,100px);padding:9px 8px}
+.botons button:not(.sec),.controls-timers button:not(.sec),.pan .desa{background:var(--ln);color:var(--on)}
+.botons button:not(.sec):hover,.controls-timers button:not(.sec):hover,.pan .desa:hover{background:var(--ln);filter:brightness(1.13)}
+button.mini{min-width:0;width:clamp(36px,9vw,44px);min-height:0;height:clamp(36px,9vw,44px);padding:0;background:var(--soft);color:var(--ln);border-color:var(--field);font-size:clamp(20px,5vw,25px);font-weight:500;line-height:1;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+button.mini:hover{background:var(--main-bg)}
 button:active{transform:scale(.97)}
-button.sec{background:#fff;color:var(--navi);border-color:#b9cede}
-button.sec:hover{background:var(--pale)}
-button.mini{min-width:0;width:clamp(32px,8.4vw,41px);height:clamp(32px,8.4vw,41px);padding:0;border-radius:9px;background:var(--pale);color:var(--navi);border:1px solid #c8d9e8;font-size:clamp(20px,5vw,25px);font-weight:500;line-height:1;touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
-button.mini:hover{background:#d8e8f5}
-select{font-size:clamp(13px,3.6vw,18px);font-weight:600;padding:7px 9px;border-radius:9px;border:1px solid #c9d9e6;background:#f8fafc;color:var(--navi-fosc);width:100%;max-width:100%;text-overflow:ellipsis}
-.t.fi .temps{color:var(--vermell)}
-.t.fi button:not(.sec){border-color:var(--vermell);background:var(--vermell)}
-.t.fi button.sec{color:var(--vermell);border-color:#e4bbb7;background:#fff}
-.t.fi button.mini{color:var(--vermell);background:#fff}
-.vel{position:fixed;inset:0;background:rgba(11,34,54,.58);display:none;align-items:center;justify-content:center;padding:16px;z-index:10}
+.t.fi button:not(.sec):not(.mini){border-color:var(--red);background:var(--red);color:var(--on)}
+.t.fi button.sec,.t.fi button.mini{color:var(--red);background:var(--surface);border-color:var(--red-border)}
+/* Configura opcions: finestra amb el mateix aspecte que les fitxes de les altres apps */
+.vel{position:fixed;inset:0;background:#11183180;display:none;align-items:center;justify-content:center;padding:12px;z-index:10}
 .vel.obert{display:flex}
-.pan{background:#fff;color:#203448;border:1px solid var(--linia);border-radius:16px;box-shadow:0 18px 50px rgba(0,20,50,.2);padding:17px;width:100%;max-width:560px;max-height:100%;overflow:auto}
-.pan h2{margin:0 0 12px;font-size:22px;font-weight:750;text-align:left;letter-spacing:-.02em;color:var(--navi-fosc)}
-.fp{display:block;padding:10px 0 12px;border-bottom:1px solid var(--linia);margin:0}
+.pan{background:var(--surface);color:var(--tx);border:1px solid var(--border);border-radius:16px;padding:18px;width:100%;max-width:560px;max-height:100%;overflow:auto}
+.pan h2{margin:0 0 4px}
+.fp{display:block;padding:10px 0 12px;border-bottom:1px solid var(--border);margin:0}
 .fp .fila-cap{display:flex;gap:7px;align-items:center;margin-bottom:7px}
-.pan input{font-size:18px;padding:8px;border-radius:8px;border:1px solid #c7d8e6;background:#fff;color:#203448;text-align:center}
-.pan .nm{flex:1;min-width:0;text-align:left;font-size:17px;font-weight:650;padding:8px 10px}
-.pan .elim{min-width:0;width:34px;height:34px;padding:0;border-radius:9px;font-size:21px;line-height:1;flex-shrink:0}
+.pan .nm{flex:1;min-width:0;font-weight:650}
+.pan .elim{min-width:0;width:40px;min-height:40px;height:40px;padding:0;font-size:21px;line-height:1;flex-shrink:0}
 .temps-config{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px;margin-top:5px}
-.temps-config label{font-size:14px;color:#4c6072}
-.camp-temps{display:flex;align-items:center;justify-content:center;border:1px solid #c7d8e6;border-radius:8px;padding:1px 5px;background:#f8fafc;min-width:100px}
-.pan .camp-temps input{width:34px;min-width:0;border:0;background:transparent;padding:4px 1px;font-size:17px;font-variant-numeric:tabular-nums;outline:none}
+.temps-config label{display:block}
+.camp-temps{display:flex;align-items:center;justify-content:center;border:1px solid var(--field);border-radius:10px;padding:1px 5px;background:var(--surface);min-width:100px}
+.pan .camp-temps input{width:34px;min-width:0;min-height:0;height:auto;border:0;background:transparent;padding:4px 1px;font-size:17px;text-align:center;font-variant-numeric:tabular-nums;outline:none}
 .camp-temps span{font-size:17px}
-.nota-avís{font-size:12px;opacity:.8;margin-top:8px}
+.nota-avís{font-size:12px;color:var(--mu);margin-top:8px}
 .pan .afegeix{width:100%;margin-top:12px}
-.peu{display:flex;gap:10px;justify-content:flex-end;margin-top:14px}
-@media(min-width:800px){body{max-width:1080px;margin:0 auto;padding:20px;gap:12px}.t{padding:14px 24px}}
-@media(max-width:380px){body{gap:7px;padding:8px}.t{padding:7px 8px;gap:6px}.zona{gap:5px}.baix{gap:4px}.ajust{gap:3px}.botons{gap:5px}.botons button{padding:7px 5px}}
-/* Aspecte comú de les apps Gesto (colors, botons, mode fosc i requadre principal com GestoComandes). */
-/* Colors: shared/colors.css (comuns a totes les apps). Colors propis de GestoTimer i noms antics que s’hi refereixen: */
-:root{--red-soft:#fff0ed;--red-border:#f0c4bf;--navi:var(--ln);--navi-fosc:var(--tx);--pale:var(--soft);--fons:var(--bg);--vermell:var(--red);--pale-v:var(--red-soft);--linia:var(--border)}
-:root[data-theme=dark]{--red-soft:#3a1f2e;--red-border:#7a3b48}
-html,body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
-body{display:block;max-width:760px;margin:0 auto;padding:20px 16px 36px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:0 3px 14px rgba(40,55,126,.055);padding:20px}
-.main-card{background:var(--main-bg);border-color:var(--main-border)}
-.cap-timers{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.cap-timers h2{font-size:21px;margin:0}
-.controls-timers{margin-left:0}
-.comptador{color:var(--mu)}
-.timers{display:grid;gap:10px;margin-top:12px}
-.t{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:none}
-.t.fi{background:var(--red-soft);border-color:var(--red-border)}
-.temps{color:var(--tx)}
-button{border-radius:10px;font-weight:600;background:var(--ln);border:1px solid var(--ln);color:var(--on)}
-button:hover{background:var(--ln);border-color:var(--ln);filter:brightness(1.13)}
-button:disabled{opacity:.55;cursor:not-allowed}
-button.sec{background:var(--surface);color:var(--tx);border-color:var(--ln)}
-button.sec:hover{background:var(--soft);filter:none}
-button.mini{background:var(--soft);color:var(--ln);border-color:var(--field)}
-button.mini:hover{background:var(--main-bg);filter:none}
-select{border:1px solid var(--field);border-radius:10px;background:var(--surface);color:var(--tx)}
-.t.fi button.sec,.t.fi button.mini{background:var(--surface);border-color:var(--red-border)}
-.vel{background:rgba(10,14,40,.55)}
-.pan{background:var(--surface);color:var(--tx);border-color:var(--border)}
-.pan h2{color:var(--tx)}
-.pan input,.camp-temps{border-color:var(--field);background:var(--surface);color:var(--tx)}
-.temps-config label{color:var(--mu)}
-:focus-visible{outline:3px solid #788cf0;outline-offset:2px}
-@media(min-width:800px){body{max-width:760px;padding:20px 16px 36px}.t{padding:14px 20px}}
-@media(max-width:430px){body{padding:14px 12px 28px}.card{padding:14px}}
+.peu{display:flex;gap:8px;justify-content:flex-end;margin-top:14px;border-top:1px solid var(--border);padding-top:12px}
+@media(max-width:380px){.t{padding:7px 8px;gap:6px}.zona{gap:5px}.baix{gap:4px}.ajust{gap:3px}.botons{gap:5px}.botons button{padding:7px 5px;min-width:66px}}
 /* Capçalera comuna de les apps Gesto: nom, versió, ☰ Menú i ↪︎ Sortir (ESTIL.md, «Capçalera de l'app» i «Menú»).
    Font única: si canvies alguna cosa aquí, canvia a totes les apps. Va després del CSS de cada app. */
 .topbar{display:flex;align-items:center;justify-content:space-between;position:relative;gap:12px;margin:0 0 18px;padding:0 0 10px;border:0}
@@ -132,12 +175,13 @@ select{border:1px solid var(--field);border-radius:10px;background:var(--surface
   .menu-anchor{position:static}
   #menu-panel{top:100%;right:0}
 }
+.topbar .entorn-proves{color:var(--red);letter-spacing:.04em}
 
 </style>
 </head>
 <body>
 <header class="topbar">
-  <div class="brand"><h1>GestoTimer</h1><div class="meta version">Versió 1.5.1<span id="sync-state" role="status"></span></div></div>
+  <div class="brand"><h1>GestoTimer</h1><div class="meta version">Versió 1.6.0<span id="sync-state" role="status"></span></div></div>
   <div class="top-actions">
     <div class="menu-anchor">
       <button id="menu-toggle" type="button" aria-label="Menú" aria-expanded="false" aria-controls="menu-panel"><span aria-hidden="true">☰</span><span class="top-action-label" aria-hidden="true">Menú</span></button>
